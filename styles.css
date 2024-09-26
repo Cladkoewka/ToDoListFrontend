@@ -1,6 +1,6 @@
 
 #login-button {
-    background-color: #CCC5B9;
+    background-color: #fffcf2;
     color: #252422;
     font-weight: bolder;
     padding: 10px 20px;
@@ -18,7 +18,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #CCC5B9;
+    background-color: #fffcf2;
     padding: 20px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
@@ -40,7 +40,7 @@
 }
 .close-button {
     background-color: #EB5E28;
-    color: #CCC5B9;
+    color: #fffcf2;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
@@ -57,7 +57,7 @@
 #task-list-title {
     text-align: center;
     color: #252422;
-    background-color: #CCC5B9;
+    background-color: #fffcf2;
     padding: 20px 0;
     border-radius: 10px;
 }
@@ -71,7 +71,7 @@
     width: 20%;
     font-weight: bold;
     color: #252422; 
-    background-color: #CCC5B9; 
+    background-color: #fffcf2; 
     padding: 10px;
     cursor: pointer;
     border-radius: 5px;
@@ -83,7 +83,7 @@
     color: #EB5E28;
 }
 .task {
-    background-color: #CCC5B9; 
+    background-color: #fffcf2; 
     width: calc(33% - 10px); 
     border: 2px solid #252422; 
     padding: 0 10px;
@@ -139,7 +139,7 @@
     margin: 0;
 }
 .task-tag {
-    background-color: #25242235; 
+    background-color: #ccc5b9; 
     color: #EB5E28; 
     padding: 5px;
     border-radius: 5px;
@@ -201,8 +201,8 @@
     padding: 20px 0 10px 0;
 }
 header {
-    background-color: #3e2723; 
-    color: #CCC5B9; 
+    background-color: #403d39; 
+    color: #fffcf2; 
     display: flex;
     align-items: center;
     padding: 10px 20px;
@@ -235,8 +235,8 @@ main {
     flex: 1;
 }
 footer {
-    background-color: #3e2723; 
-    color: #CCC5B9; 
+    background-color: #403d39; 
+    color: #fffcf2; 
     padding: 10px;
     border-radius: 10px;
 
