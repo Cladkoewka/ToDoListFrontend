@@ -106,10 +106,14 @@
                         </div>
 
                         <!-- Поле ввода нового тега -->
-                        <input type="text" class="add-tag-input" placeholder="New tag">
-
-                        <!-- Всплывающий список совпадающих тегов -->
-                        <ul class="suggested-tags"></ul>
+                        <input type="text" class="add-tag-input" placeholder="New tag" list="suggested-tags">
+                        <datalist id="suggested-tags">
+                            <option value="Urgent">
+                            <option value="Work">
+                            <option value="Personal">
+                            <option value="Important">
+                            <option value="Later">
+                        </datalist>
                     </div>
 
                     <!-- Кнопки редактирования и обновления -->

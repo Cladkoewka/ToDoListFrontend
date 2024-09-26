@@ -156,13 +156,18 @@
 .remove-tag-button:hover {
     color: red;
 }
-.add-tag-input {
-    background-color: #FFFCF2;
+.add-tag-input, #register-email, #register-password,
+#register-confirm-password, #login-email, #login-password {
+    background-color: white;
     width: 50%;
     box-sizing: border-box;
     border-radius: 5px;
     padding: 5px;
+    margin: 5px 0;
     color:#252422;
+}
+label {
+    font-weight:400;
 }
 .edit-task-button, .update-task-button, .delete-task-button, 
 .login-modal-login-button, .close-login-modal-button,
@@ -173,8 +178,10 @@
     color:#252422;
     font-family: 'Lato', sans-serif;
     transition: color 0.2s ease;
+    font-weight: bolder;
+    text-align: center;
 }
-.edit-task-button:hover .edit-task-button:hover, .delete-task-button:hover,
+.edit-task-button:hover, .update-task-button:hover, .delete-task-button:hover,
 .login-modal-login-button:hover, .close-login-modal-button:hover,
 .register-modal-register-button:hover, .register-modal-close-button:hover {
     color: #EB5E28;
@@ -228,7 +235,7 @@ body {
     display: flex;
     flex-direction:column;
     min-height: 100vh;
-    background-color: #FFFCF2;
+    background-color: white;
     font-family: 'Lato', sans-serif;
 }
 main {
@@ -248,4 +255,5 @@ a {
 a:hover {
     text-decoration: underline; 
 }
+
     
