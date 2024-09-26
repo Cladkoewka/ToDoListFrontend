@@ -1,0 +1,251 @@
+
+#login-button {
+    background-color: #CCC5B9;
+    color: #252422;
+    font-weight: bolder;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+#login-button:hover {
+    color: #EB5E28;
+}
+#login-modal, #register-modal {
+    visibility: hidden;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #CCC5B9;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    z-index: 1000;
+}
+.modal-switch {
+    text-align: center;
+    margin-top: 20px;
+}
+#modal-overlay {
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 900;
+}
+.close-button {
+    background-color: #EB5E28;
+    color: #CCC5B9;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+#task-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    list-style: none;
+    padding-left: 0;
+    justify-content: space-between;
+}
+#task-list-title {
+    text-align: center;
+    color: #252422;
+    background-color: #CCC5B9;
+    padding: 20px 0;
+    border-radius: 10px;
+}
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0; 
+}
+#add-task-button {
+    align-self: center; 
+    width: 20%;
+    font-weight: bold;
+    color: #252422; 
+    background-color: #CCC5B9; 
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 2px solid #252422; 
+    transition: width  0.6s ease;
+}
+#add-task-button:hover {
+    width: 100%;
+    color: #EB5E28;
+}
+.task {
+    background-color: #CCC5B9; 
+    width: calc(33% - 10px); 
+    border: 2px solid #252422; 
+    padding: 0 10px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
+}
+@media (max-width: 1200px) {
+    .task {
+        width: calc(50% - 10px); 
+    }
+}
+@media (max-width: 600px) {
+    .task {
+        width: 100%; 
+    }
+}
+.task:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); 
+}
+.task-title {
+    text-align: center;
+    color:#252422;
+    border-radius: 5px;
+    font-size: x-large;
+    font-weight:bolder;
+    margin: 10px;
+}
+.task-dates {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    font-style: italic;
+    font-size: smaller;
+}
+.task-created-time{
+    text-align: left;
+}
+.task-updated-time{
+    text-align: right;
+}
+.task-dates p {
+    margin: 0;
+}
+.task-tags-title {
+    color: #252422;
+}
+.task-tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 0;
+    margin: 0;
+}
+.task-tag {
+    background-color: #25242235; 
+    color: #EB5E28; 
+    padding: 5px;
+    border-radius: 5px;
+}
+.remove-tag-button {
+    background-color: #FFFCF2; 
+    color: #252422; 
+    font-weight: bold;
+    padding: 3px 7px;
+    margin: 0 5px;
+    border-radius: 5px;
+    transition: color 0.2s ease;
+}
+.remove-tag-button:hover {
+    color: red;
+}
+.add-tag-input {
+    background-color: #FFFCF2;
+    width: 50%;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 5px;
+    color:#252422;
+}
+.edit-task-button, .update-task-button, .delete-task-button, 
+.login-modal-login-button, .close-login-modal-button,
+.register-modal-register-button, .register-modal-close-button {
+    background-color: #FFFCF2;
+    border-radius: 5px;
+    padding: 5px;
+    color:#252422;
+    font-family: 'Lato', sans-serif;
+    transition: color 0.2s ease;
+}
+.edit-task-button:hover .edit-task-button:hover, .delete-task-button:hover,
+.login-modal-login-button:hover, .close-login-modal-button:hover,
+.register-modal-register-button:hover, .register-modal-close-button:hover {
+    color: #EB5E28;
+}
+.login-modal-buttons, .register-modal-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+.login-modal-login-button, .register-modal-register-button
+{
+    width: 49%;
+    text-align: left;
+}
+.close-login-modal-button, .register-modal-close-button {
+    width: 49%;
+    text-align: left;
+}
+#login-email, #login-password, #register-email,
+#register-password, #register-confirm-password {
+    width: 100%;
+}
+.task-buttons
+{
+    padding: 20px 0 10px 0;
+}
+header {
+    background-color: #3e2723; 
+    color: #CCC5B9; 
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+#login-button {
+    margin-left: auto;
+}
+h1 {
+    margin: 0;
+    flex-grow: 1;
+}
+h2 {
+    text-align: center;
+    margin: 10px;
+}
+#user-buttons {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+body {
+    display: flex;
+    flex-direction:column;
+    min-height: 100vh;
+    background-color: #FFFCF2;
+    font-family: 'Lato', sans-serif;
+}
+main {
+    flex: 1;
+}
+footer {
+    background-color: #3e2723; 
+    color: #CCC5B9; 
+    padding: 10px;
+    border-radius: 10px;
+
+}
+a {
+    color: #EB5E28;
+    text-decoration: none; 
+}
+a:hover {
+    text-decoration: underline; 
+}
+    

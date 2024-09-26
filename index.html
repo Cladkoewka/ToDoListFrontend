@@ -3,153 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do App</title>
+    <title>TaskMaster - To-Do App</title>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        #login-button {
-            background-color: #CCC5B9;
-            color: #EB5E28;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #login-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #CCC5B9;
-            padding: 20px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            z-index: 1000;
-        }
-
-        #modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 900;
-        }
-        .close-button {
-            background-color: #EB5E28;
-            color: #CCC5B9;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        #task-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            list-style: none;
-            padding-left: 0;
-        }
-        #task-list-title {
-            text-align: center;
-            color: #252422;
-            background-color: #CCC5B9;
-            padding: 20px 0;
-            border-radius: 10px;
-        }
-        #add-task-button {
-            width: 100%;
-            color: #252422; 
-            background-color: #CCC5B9; 
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .task {
-            background-color: #CCC5B9; 
-            width: calc(50% - 20px); 
-            border: 2px solid #252422; 
-            padding: 0 10px;
-            box-sizing: border-box;
-            border-radius: 10px;
-        }
-        .task-title {
-            text-align: center;
-            color:#252422;
-            border-radius: 5px;
-            font-size: x-large;
-            font-weight:bolder;
-        }
-        .task-dates {
-            display: flex;
-            gap: 20px;
-            font-style: italic;
-            font-size: smaller;
-        }
-        .task-dates p {
-            margin: 0;
-        }
-        .task-tags-title {
-            color: #252422;
-        }
-        .task-tags-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding: 10px 0;
-        }
-        .task-tag {
-            background-color: #25242235; 
-            color: #EB5E28; 
-            padding: 5px;
-            border-radius: 10px;
-        }
-        .task-buttons
-        {
-            padding: 20px 0 10px 0;
-        }
-        header {
-            background-color: #3e2723; 
-            color: #CCC5B9; 
-            padding: 10px;
-            border-radius: 10px;
-        }
-        #user-buttons {
-            display: flex;
-            gap: 20px;
-            list-style: none;
-        }
-        body {
-            display: flex;
-            flex-direction:column;
-            min-height: 100vh;
-            background-color: #FFFCF2;
-            font-family: 'Lato', sans-serif;
-        }
-        main {
-            flex: 1;
-        }
-        footer {
-            background-color: #3e2723; 
-            color: #CCC5B9; 
-            padding: 10px;
-            border-radius: 10px;
-        }
-        a {
-            color: #EB5E28;
-            text-decoration: none; 
-        }
-        a:hover {
-            text-decoration: underline; 
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Шапка с возможностью авторизации -->
     <header>
+        <h1>TaskMaster</h1>
         <nav>
             <button id="login-button">Login</button>
         </nav>
@@ -161,23 +22,47 @@
         <h2>Login</h2>
         <form id="login-form">
             <label for="email">Email:</label><br>
-            <input type="email" id="email" name="email" required><br><br>
+            <input type="email" id="login-email" name="email" required><br><br>
             <label for="password">Password:</label><br>
-            <input type="password" id="password" name="password" required><br><br>
-            <button type="submit">Login</button>
-            <button type="button" class="close-button">Close</button>
+            <input type="password" id="login-password" name="password" required><br><br>
+            <div class="login-modal-buttons">
+                <button type="submit" class="login-modal-login-button">Login</button>
+                <button type="button" class="close-login-modal-button">Close</button>
+            </div>
+            <div class="modal-switch">
+                <p>Don't have an account? <a id="register-link" href="#">Register</a></p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Модальное окно для регистрации -->
+    <div id="register-modal">
+        <h2>Register</h2>
+        <form id="register-form">
+            <label for="register-email">Email:</label><br>
+            <input type="email" id="register-email" name="register-email" required><br><br>
+            <label for="register-password">Password:</label><br>
+            <input type="password" id="register-password" name="register-password" required><br><br>
+            <label for="register-confirm-password">Confirm Password:</label><br>
+            <input type="password" id="register-confirm-password" name="register-confirm-password" required><br><br>
+            <div class="register-modal-buttons">
+                <button type="submit" class="register-modal-register-button">Register</button>
+                <button type="button" class="register-modal-close-button">Close</button>
+            </div>
+            <div class="modal-switch">
+                <p>Already have an account? <a id="login-link" href="#">Login</a></p>
+            </div>
         </form>
     </div>
 
     <!-- Основной контент -->
     <main>
+        <!-- Кнопка для добавления новой заметки -->
+        <div class="button-container">
+            <button id="add-task-button">Add Task</button>
+        </div>
         <!-- Список существующих заметок -->
         <section>
-            <h2 id="task-list-title">Your Tasks</h2>
-            <!-- Кнопка для добавления новой заметки -->
-            <section>
-                <button id="add-task-button">Add Task</button>
-            </section>
             <ul id="task-list">
                 <!-- Пример задачи -->
                 <li class="task">
@@ -221,17 +106,17 @@
                         </div>
 
                         <!-- Поле ввода нового тега -->
-                        <input type="text" id="addTagInput" placeholder="New tag">
+                        <input type="text" class="add-tag-input" placeholder="New tag">
 
                         <!-- Всплывающий список совпадающих тегов -->
-                        <ul id="suggestedTags" style="display:none;"></ul>
+                        <ul class="suggested-tags"></ul>
                     </div>
 
                     <!-- Кнопки редактирования и обновления -->
                     <div class="task-buttons">
-                        <button class="editTaskButton">Edit</button>
-                        <button class="updateTaskButton" style="display:none;">Save</button>
-                        <button class="deleteTaskButton">Delete</button>
+                        <button class="edit-task-button">Edit</button>
+                        <button class="update-task-button">Save</button>
+                        <button class="delete-task-button">Delete</button>
                     </div>
                 </li>
                 <!-- Пример задачи -->
@@ -276,17 +161,17 @@
                         </div>
 
                         <!-- Поле ввода нового тега -->
-                        <input type="text" id="addTagInput" placeholder="New tag">
+                        <input type="text" class="add-tag-input" placeholder="New tag">
 
                         <!-- Всплывающий список совпадающих тегов -->
-                        <ul id="suggestedTags" style="display:none;"></ul>
+                        <ul class="suggested-tags"></ul>
                     </div>
 
                     <!-- Кнопки редактирования и обновления -->
                     <div class="task-buttons">
-                        <button class="editTaskButton">Edit</button>
-                        <button class="updateTaskButton" style="display:none;">Save</button>
-                        <button class="deleteTaskButton">Delete</button>
+                        <button class="edit-task-button">Edit</button>
+                        <button class="update-task-button">Save</button>
+                        <button class="delete-task-button">Delete</button>
                     </div>
                 </li>
                 <!-- Пример задачи -->
@@ -331,17 +216,17 @@
                         </div>
 
                         <!-- Поле ввода нового тега -->
-                        <input type="text" id="addTagInput" placeholder="New tag">
+                        <input type="text" class="add-tag-input" placeholder="New tag">
 
                         <!-- Всплывающий список совпадающих тегов -->
-                        <ul id="suggestedTags" style="display:none;"></ul>
+                        <ul class="suggested-tags"></ul>
                     </div>
 
                     <!-- Кнопки редактирования и обновления -->
                     <div class="task-buttons">
-                        <button class="editTaskButton">Edit</button>
-                        <button class="updateTaskButton" style="display:none;">Save</button>
-                        <button class="deleteTaskButton">Delete</button>
+                        <button class="edit-task-button">Edit</button>
+                        <button class="update-task-button">Save</button>
+                        <button class="delete-task-button">Delete</button>
                     </div>
                 </li>
             </ul>
@@ -350,8 +235,9 @@
 
     <!-- Футер с контактной информацией -->
     <footer>
-        <p>Контактная информация: <a href="mailto:example@example.com">example@example.com</a></p>
-        <p>Телефон: +7 123 456 7890</p>
+        <p>Contact information: <a href="mailto:codewarriorms@gmail.com">codewarriorms@gmail.com</a></p>
+        <p>My works: <a href="https://github.com/Cladkoewka">GitHub</a></p>
+        <p>Made by CLadkoewka 2024</p>
     </footer>
 </body>
 </html>
