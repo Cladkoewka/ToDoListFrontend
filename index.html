@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        #login-button {
+            background-color: #CCC5B9;
+            color: #EB5E28;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #login-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #CCC5B9;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            z-index: 1000;
+        }
+
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 900;
+        }
+        .close-button {
+            background-color: #EB5E28;
+            color: #CCC5B9;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #task-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            list-style: none;
+            padding-left: 0;
+        }
+        #task-list-title {
+            text-align: center;
+            color: #252422;
+            background-color: #CCC5B9;
+            padding: 20px 0;
+            border-radius: 10px;
+        }
+        #add-task-button {
+            width: 100%;
+            color: #252422; 
+            background-color: #CCC5B9; 
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .task {
+            background-color: #CCC5B9; 
+            width: calc(50% - 20px); 
+            border: 2px solid #252422; 
+            padding: 0 10px;
+            box-sizing: border-box;
+            border-radius: 10px;
+        }
+        .task-title {
+            text-align: center;
+            color:#252422;
+            border-radius: 5px;
+            font-size: x-large;
+            font-weight:bolder;
+        }
+        .task-dates {
+            display: flex;
+            gap: 20px;
+            font-style: italic;
+            font-size: smaller;
+        }
+        .task-dates p {
+            margin: 0;
+        }
+        .task-tags-title {
+            color: #252422;
+        }
+        .task-tags-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px 0;
+        }
+        .task-tag {
+            background-color: #25242235; 
+            color: #EB5E28; 
+            padding: 5px;
+            border-radius: 10px;
+        }
+        .task-buttons
+        {
+            padding: 20px 0 10px 0;
+        }
+        header {
+            background-color: #3e2723; 
+            color: #CCC5B9; 
+            padding: 10px;
+            border-radius: 10px;
+        }
+        #user-buttons {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+        body {
+            display: flex;
+            flex-direction:column;
+            min-height: 100vh;
+            background-color: #FFFCF2;
+            font-family: 'Lato', sans-serif;
+        }
+        main {
+            flex: 1;
+        }
+        footer {
+            background-color: #3e2723; 
+            color: #CCC5B9; 
+            padding: 10px;
+            border-radius: 10px;
+        }
+        a {
+            color: #EB5E28;
+            text-decoration: none; 
+        }
+        a:hover {
+            text-decoration: underline; 
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка с возможностью авторизации -->
+    <header>
+        <nav>
+            <button id="login-button">Login</button>
+        </nav>
+    </header>
+
+    <!-- Модальное окно для логина -->
+    <div id="modal-overlay"></div>
+    <div id="login-modal">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" required><br><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required><br><br>
+            <button type="submit">Login</button>
+            <button type="button" class="close-button">Close</button>
+        </form>
+    </div>
+
+    <!-- Основной контент -->
+    <main>
+        <!-- Список существующих заметок -->
+        <section>
+            <h2 id="task-list-title">Your Tasks</h2>
+            <!-- Кнопка для добавления новой заметки -->
+            <section>
+                <button id="add-task-button">Add Task</button>
+            </section>
+            <ul id="task-list">
+                <!-- Пример задачи -->
+                <li class="task">
+                    <h3 class="task-title">Task Title</h3>
+                    <div class="task-dates">
+                        <p>Created: <span class="task-created-time">2024-09-26 10:00</span></p>
+                        <p>Last Update: <span class="task-updated-time">2024-09-26 12:00</span></p>
+                    </div>
+                    <p class="task-description">Description desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption</p>
+
+                    <!-- Теги -->
+                    <div class="task-tags">
+                        <h4 class="task-tags-title">Tags:</h4>
+
+                        <!-- Контейнер для тегов -->
+                        <div class="task-tags-list">
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag 1</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag 2</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag tag 1</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag tag tag 2</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag 1</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag tag 2</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                        </div>
+
+                        <!-- Поле ввода нового тега -->
+                        <input type="text" id="addTagInput" placeholder="New tag">
+
+                        <!-- Всплывающий список совпадающих тегов -->
+                        <ul id="suggestedTags" style="display:none;"></ul>
+                    </div>
+
+                    <!-- Кнопки редактирования и обновления -->
+                    <div class="task-buttons">
+                        <button class="editTaskButton">Edit</button>
+                        <button class="updateTaskButton" style="display:none;">Save</button>
+                        <button class="deleteTaskButton">Delete</button>
+                    </div>
+                </li>
+                <!-- Пример задачи -->
+                <li class="task">
+                    <h3 class="task-title">Task Title</h3>
+                    <div class="task-dates">
+                        <p>Created: <span class="task-created-time">2024-09-26 10:00</span></p>
+                        <p>Last Update: <span class="task-updated-time">2024-09-26 12:00</span></p>
+                    </div>
+                    <p class="task-description">Description desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption</p>
+
+                    <!-- Теги -->
+                    <div class="task-tags">
+                        <h4 class="task-tags-title">Tags:</h4>
+
+                        <!-- Контейнер для тегов -->
+                        <div class="task-tags-list">
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag 1</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag 2</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag tag 1</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag tag tag 2</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag 1</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag tag 2</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                        </div>
+
+                        <!-- Поле ввода нового тега -->
+                        <input type="text" id="addTagInput" placeholder="New tag">
+
+                        <!-- Всплывающий список совпадающих тегов -->
+                        <ul id="suggestedTags" style="display:none;"></ul>
+                    </div>
+
+                    <!-- Кнопки редактирования и обновления -->
+                    <div class="task-buttons">
+                        <button class="editTaskButton">Edit</button>
+                        <button class="updateTaskButton" style="display:none;">Save</button>
+                        <button class="deleteTaskButton">Delete</button>
+                    </div>
+                </li>
+                <!-- Пример задачи -->
+                <li class="task">
+                    <h3 class="task-title">Task Title</h3>
+                    <div class="task-dates">
+                        <p>Created: <span class="task-created-time">2024-09-26 10:00</span></p>
+                        <p>Last Update: <span class="task-updated-time">2024-09-26 12:00</span></p>
+                    </div>
+                    <p class="task-description">Description desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption</p>
+
+                    <!-- Теги -->
+                    <div class="task-tags">
+                        <h4 class="task-tags-title">Tags:</h4>
+
+                        <!-- Контейнер для тегов -->
+                        <div class="task-tags-list">
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag 1</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag 2</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag tag 1</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag tag tag 2</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag 1</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                            <div class="task-tag">
+                                <span class="task-tag-title">Tag tag 2</span>
+                                <button class="remove-tag-button">x</button>
+                            </div>
+                        </div>
+
+                        <!-- Поле ввода нового тега -->
+                        <input type="text" id="addTagInput" placeholder="New tag">
+
+                        <!-- Всплывающий список совпадающих тегов -->
+                        <ul id="suggestedTags" style="display:none;"></ul>
+                    </div>
+
+                    <!-- Кнопки редактирования и обновления -->
+                    <div class="task-buttons">
+                        <button class="editTaskButton">Edit</button>
+                        <button class="updateTaskButton" style="display:none;">Save</button>
+                        <button class="deleteTaskButton">Delete</button>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Футер с контактной информацией -->
+    <footer>
+        <p>Контактная информация: <a href="mailto:example@example.com">example@example.com</a></p>
+        <p>Телефон: +7 123 456 7890</p>
+    </footer>
+</body>
+</html>
