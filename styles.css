@@ -4,7 +4,7 @@
     color: #252422;
     font-weight: bolder;
     padding: 10px 20px;
-    border: none;
+    border: 2px solid #252422;
     border-radius: 5px;
     cursor: pointer;
     transition: color 0.2s ease;
@@ -12,6 +12,8 @@
 #login-button:hover {
     color: #EB5E28;
 }
+
+/* Modals */
 #login-modal, #register-modal {
     visibility: hidden;
     position: fixed;
@@ -38,34 +40,22 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 900;
 }
-.close-button {
-    background-color: #EB5E28;
-    color: #fffcf2;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-#task-list {
+#login-modal-buttons, #register-modal-buttons {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    list-style: none;
-    padding-left: 0;
     justify-content: space-between;
 }
-#task-list-title {
+#login-modal-login-button, #register-modal-register-button,
+#close-login-modal-button, #register-modal-close-button
+{
+    width: 49%;
     text-align: center;
-    color: #252422;
-    background-color: #fffcf2;
-    padding: 20px 0;
-    border-radius: 10px;
 }
-.button-container {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0; 
+#login-email, #login-password, #register-email,
+#register-password, #register-confirm-password {
+    width: 100%;
 }
+
+/* Add task button */
 #add-task-button {
     align-self: center; 
     width: 20%;
@@ -82,6 +72,25 @@
     width: 100%;
     color: #EB5E28;
 }
+
+/* Task List */
+#task-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    list-style: none;
+    padding-left: 0;
+    justify-content: space-between;
+}
+#task-list-title {
+    text-align: center;
+    color: #252422;
+    background-color: #fffcf2;
+    padding: 20px 0;
+    border-radius: 10px;
+}
+
+/* Task */
 .task {
     background-color: #fffcf2; 
     width: calc(33% - 10px); 
@@ -90,16 +99,6 @@
     box-sizing: border-box;
     border-radius: 10px;
     transition: box-shadow 0.3s ease;
-}
-@media (max-width: 1200px) {
-    .task {
-        width: calc(50% - 10px); 
-    }
-}
-@media (max-width: 600px) {
-    .task {
-        width: 100%; 
-    }
 }
 .task:hover {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); 
@@ -119,14 +118,14 @@
     font-style: italic;
     font-size: smaller;
 }
+.task-dates p {
+    margin: 0;
+}
 .task-created-time{
     text-align: left;
 }
 .task-updated-time{
     text-align: right;
-}
-.task-dates p {
-    margin: 0;
 }
 .task-tags-title {
     color: #252422;
@@ -138,6 +137,11 @@
     padding: 10px 0;
     margin: 0;
 }
+.task-buttons {
+    padding: 20px 0 10px 0;
+}
+
+/* Task Tag */
 .task-tag {
     background-color: #ccc5b9; 
     color: #EB5E28; 
@@ -156,6 +160,8 @@
 .remove-tag-button:hover {
     color: red;
 }
+
+/* Input */
 .add-tag-input, #register-email, #register-password,
 #register-confirm-password, #login-email, #login-password {
     background-color: white;
@@ -166,12 +172,9 @@
     margin: 5px 0;
     color:#252422;
 }
-label {
-    font-weight:400;
-}
 .edit-task-button, .update-task-button, .delete-task-button, 
-.login-modal-login-button, .close-login-modal-button,
-.register-modal-register-button, .register-modal-close-button {
+#login-modal-login-button, #close-login-modal-button,
+#register-modal-register-button, #register-modal-close-button {
     background-color: #FFFCF2;
     border-radius: 5px;
     padding: 5px;
@@ -182,30 +185,14 @@ label {
     text-align: center;
 }
 .edit-task-button:hover, .update-task-button:hover, .delete-task-button:hover,
-.login-modal-login-button:hover, .close-login-modal-button:hover,
-.register-modal-register-button:hover, .register-modal-close-button:hover {
+#login-modal-login-button:hover, #close-login-modal-button:hover,
+#register-modal-register-button:hover, #register-modal-close-button:hover {
     color: #EB5E28;
 }
-.login-modal-buttons, .register-modal-buttons {
-    display: flex;
-    justify-content: space-between;
-}
-.login-modal-login-button, .register-modal-register-button
-{
-    width: 49%;
-    text-align: left;
-}
-.close-login-modal-button, .register-modal-close-button {
-    width: 49%;
-    text-align: left;
-}
-#login-email, #login-password, #register-email,
-#register-password, #register-confirm-password {
-    width: 100%;
-}
-.task-buttons
-{
-    padding: 20px 0 10px 0;
+
+
+main {
+    flex: 1;
 }
 header {
     background-color: #403d39; 
@@ -215,9 +202,12 @@ header {
     padding: 10px 20px;
     border-radius: 10px;
 }
-#login-button {
-    margin-left: auto;
-}
+body {
+    display: flex;
+    flex-direction:column;
+    min-height: 100vh;
+    background-color: white;
+    f
 h1 {
     margin: 0;
     flex-grow: 1;
@@ -230,16 +220,7 @@ h2 {
     display: flex;
     gap: 20px;
     list-style: none;
-}
-body {
-    display: flex;
-    flex-direction:column;
-    min-height: 100vh;
-    background-color: white;
-    font-family: 'Lato', sans-serif;
-}
-main {
-    flex: 1;
+}ont-family: 'Lato', sans-serif;
 }
 footer {
     background-color: #403d39; 
@@ -255,5 +236,24 @@ a {
 a:hover {
     text-decoration: underline; 
 }
-
+label {
+    font-weight:400;
+}
     
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0; 
+}
+
+@media (max-width: 1200px) {
+    .task {
+        width: calc(50% - 10px); 
+    }
+}
+@media (max-width: 600px) {
+    .task {
+        width: 100%; 
+    }
+}

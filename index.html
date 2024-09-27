@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Шапка с возможностью авторизации -->
     <header>
         <h1>TaskMaster</h1>
         <nav>
@@ -16,7 +15,7 @@
         </nav>
     </header>
 
-    <!-- Модальное окно для логина -->
+    <!-- Login modal -->
     <div id="modal-overlay"></div>
     <div id="login-modal">
         <h2>Login</h2>
@@ -25,9 +24,9 @@
             <input type="email" id="login-email" name="email" required><br><br>
             <label for="password">Password:</label><br>
             <input type="password" id="login-password" name="password" required><br><br>
-            <div class="login-modal-buttons">
-                <button type="submit" class="login-modal-login-button">Login</button>
-                <button type="button" class="close-login-modal-button">Close</button>
+            <div id="login-modal-buttons">
+                <button type="submit" id="login-modal-login-button">Login</button>
+                <button type="button" id="close-login-modal-button">Close</button>
             </div>
             <div class="modal-switch">
                 <p>Don't have an account? <a id="register-link" href="#">Register</a></p>
@@ -35,7 +34,7 @@
         </form>
     </div>
 
-    <!-- Модальное окно для регистрации -->
+    <!-- Register modal -->
     <div id="register-modal">
         <h2>Register</h2>
         <form id="register-form">
@@ -45,9 +44,9 @@
             <input type="password" id="register-password" name="register-password" required><br><br>
             <label for="register-confirm-password">Confirm Password:</label><br>
             <input type="password" id="register-confirm-password" name="register-confirm-password" required><br><br>
-            <div class="register-modal-buttons">
-                <button type="submit" class="register-modal-register-button">Register</button>
-                <button type="button" class="register-modal-close-button">Close</button>
+            <div id="register-modal-buttons">
+                <button type="submit" id="register-modal-register-button">Register</button>
+                <button type="button" id="register-modal-close-button">Close</button>
             </div>
             <div class="modal-switch">
                 <p>Already have an account? <a id="login-link" href="#">Login</a></p>
@@ -55,16 +54,16 @@
         </form>
     </div>
 
-    <!-- Основной контент -->
+    <!-- Main content -->
     <main>
-        <!-- Кнопка для добавления новой заметки -->
+        <!-- Add new task button -->
         <div class="button-container">
             <button id="add-task-button">Add Task</button>
         </div>
-        <!-- Список существующих заметок -->
+        <!-- Tasks list -->
         <section>
             <ul id="task-list">
-                <!-- Пример задачи -->
+                <!-- Task example -->
                 <li class="task">
                     <h3 class="task-title">Task Title</h3>
                     <div class="task-dates">
@@ -73,11 +72,11 @@
                     </div>
                     <p class="task-description">Description desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption</p>
 
-                    <!-- Теги -->
+                    <!-- Tags -->
                     <div class="task-tags">
                         <h4 class="task-tags-title">Tags:</h4>
 
-                        <!-- Контейнер для тегов -->
+                        <!-- Tags container -->
                         <div class="task-tags-list">
                             <div class="task-tag">
                                 <span class="task-tag-title">Tag 1</span>
@@ -105,7 +104,7 @@
                             </div>
                         </div>
 
-                        <!-- Поле ввода нового тега -->
+                        <!-- Add tag input -->
                         <input type="text" class="add-tag-input" placeholder="New tag" list="suggested-tags">
                         <datalist id="suggested-tags">
                             <option value="Urgent">
@@ -116,117 +115,7 @@
                         </datalist>
                     </div>
 
-                    <!-- Кнопки редактирования и обновления -->
-                    <div class="task-buttons">
-                        <button class="edit-task-button">Edit</button>
-                        <button class="update-task-button">Save</button>
-                        <button class="delete-task-button">Delete</button>
-                    </div>
-                </li>
-                <!-- Пример задачи -->
-                <li class="task">
-                    <h3 class="task-title">Task Title</h3>
-                    <div class="task-dates">
-                        <p>Created: <span class="task-created-time">2024-09-26 10:00</span></p>
-                        <p>Last Update: <span class="task-updated-time">2024-09-26 12:00</span></p>
-                    </div>
-                    <p class="task-description">Description desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption</p>
-
-                    <!-- Теги -->
-                    <div class="task-tags">
-                        <h4 class="task-tags-title">Tags:</h4>
-
-                        <!-- Контейнер для тегов -->
-                        <div class="task-tags-list">
-                            <div class="task-tag">
-                                <span class="task-tag-title">Tag 1</span>
-                                <button class="remove-tag-button">x</button>
-                            </div>
-                            <div class="task-tag">
-                                <span class="task-tag-title">Tag 2</span>
-                                <button class="remove-tag-button">x</button>
-                            </div>
-                            <div class="task-tag">
-                                <span class="task-tag-title">Tag tag 1</span>
-                                <button class="remove-tag-button">x</button>
-                            </div>
-                            <div class="task-tag">
-                                <span class="task-tag-title">Tag tag tag 2</span>
-                                <button class="remove-tag-button">x</button>
-                            </div>
-                            <div class="task-tag">
-                                <span class="task-tag-title">Tag 1</span>
-                                <button class="remove-tag-button">x</button>
-                            </div>
-                            <div class="task-tag">
-                                <span class="task-tag-title">Tag tag 2</span>
-                                <button class="remove-tag-button">x</button>
-                            </div>
-                        </div>
-
-                        <!-- Поле ввода нового тега -->
-                        <input type="text" class="add-tag-input" placeholder="New tag">
-
-                        <!-- Всплывающий список совпадающих тегов -->
-                        <ul class="suggested-tags"></ul>
-                    </div>
-
-                    <!-- Кнопки редактирования и обновления -->
-                    <div class="task-buttons">
-                        <button class="edit-task-button">Edit</button>
-                        <button class="update-task-button">Save</button>
-                        <button class="delete-task-button">Delete</button>
-                    </div>
-                </li>
-                <!-- Пример задачи -->
-                <li class="task">
-                    <h3 class="task-title">Task Title</h3>
-                    <div class="task-dates">
-                        <p>Created: <span class="task-created-time">2024-09-26 10:00</span></p>
-                        <p>Last Update: <span class="task-updated-time">2024-09-26 12:00</span></p>
-                    </div>
-                    <p class="task-description">Description desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption desctiption</p>
-
-                    <!-- Теги -->
-                    <div class="task-tags">
-                        <h4 class="task-tags-title">Tags:</h4>
-
-                        <!-- Контейнер для тегов -->
-                        <div class="task-tags-list">
-                            <div class="task-tag">
-                                <span class="task-tag-title">Tag 1</span>
-                                <button class="remove-tag-button">x</button>
-                            </div>
-                            <div class="task-tag">
-                                <span class="task-tag-title">Tag 2</span>
-                                <button class="remove-tag-button">x</button>
-                            </div>
-                            <div class="task-tag">
-                                <span class="task-tag-title">Tag tag 1</span>
-                                <button class="remove-tag-button">x</button>
-                            </div>
-                            <div class="task-tag">
-                                <span class="task-tag-title">Tag tag tag 2</span>
-                                <button class="remove-tag-button">x</button>
-                            </div>
-                            <div class="task-tag">
-                                <span class="task-tag-title">Tag 1</span>
-                                <button class="remove-tag-button">x</button>
-                            </div>
-                            <div class="task-tag">
-                                <span class="task-tag-title">Tag tag 2</span>
-                                <button class="remove-tag-button">x</button>
-                            </div>
-                        </div>
-
-                        <!-- Поле ввода нового тега -->
-                        <input type="text" class="add-tag-input" placeholder="New tag">
-
-                        <!-- Всплывающий список совпадающих тегов -->
-                        <ul class="suggested-tags"></ul>
-                    </div>
-
-                    <!-- Кнопки редактирования и обновления -->
+                    <!-- Task buttons -->
                     <div class="task-buttons">
                         <button class="edit-task-button">Edit</button>
                         <button class="update-task-button">Save</button>
@@ -237,7 +126,6 @@
         </section>
     </main>
 
-    <!-- Футер с контактной информацией -->
     <footer>
         <p>Contact information: <a href="mailto:codewarriorms@gmail.com">codewarriorms@gmail.com</a></p>
         <p>My works: <a href="https://github.com/Cladkoewka">GitHub</a></p>
