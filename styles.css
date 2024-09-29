@@ -98,14 +98,33 @@
     padding: 0 10px;
     box-sizing: border-box;
     border-radius: 10px;
-    transition: box-shadow 0.3s ease;
+    transition: box-shadow 0.3s ease, transform 0.3s ease, opacity 0.5s ease, height 0.5s ease;
     display: flex;
     height: 400px;
     flex-direction: column;
     justify-content: space-between;
+    animation: fadeIn 0.5s ease-in-out;
 }
 .task:hover {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); 
+}
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+}
+.fade-out {
+    opacity: 0; 
+    transform: translateY(-10px); 
+    height: 0;  
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 .task-title {
     text-align: center;
