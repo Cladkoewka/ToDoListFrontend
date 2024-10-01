@@ -111,14 +111,17 @@ async function updateTaskApi(taskId, updatedTask) {
         }),
     });
 
-    console.log(updatedTask.tagIds);
     if (!response.ok) {
         const errorText = await response.text();
-        console.error(`Failed to update task: ${errorText}`); 
-        throw new Error(`Failed to update task: ${errorText}`); 
+        throw new Error(`Failed to update task: ${errorText}`);
     }
 
-    return await response.json(); 
+    // Check if the response has content
+    const responseText = await response.text();
+    if (responseText) {
+        return JSON.parse(responseText); // Return JSON response
+    }
+    return {}; // Return empty object if no content
 }
 
 // Delete task
@@ -249,6 +252,30 @@ async function addExistingTag(tagsList, taskId, tagName, task) {
     }
 }
 
+async function removeExistingTag(tagId, taskId, tagsList, tagElement, task) {
+    try {
+        // Remove tag from frontend
+        tagsList.removeChild(tagElement);
+
+        // Update tag IDs (remove the tag's ID)
+        const updatedTagIds = task.tags.filter(t => t.id !== tagId).map(t => t.id);
+
+        // Update task with the new tag list
+        const updatedTask = {
+            title: task.title,
+            description: task.description,
+            lastUpdateTime: new Date().toISOString(),
+            isCompleted: task.isCompleted,
+            tagIds: updatedTagIds
+        };
+
+        await updateTaskApi(taskId, updatedTask);
+        console.log("Tag removed successfully");
+    } catch (error) {
+        console.error("Failed to remove tag:", error);
+    }
+}
+
 // Add new tag to api and task
 async function addNewTag(tagsList, taskElement, tagName) {
     // Dont add empty tags
@@ -283,6 +310,12 @@ async function saveNewTask(taskElement) {
     const title = taskElement.querySelector(".task-title-input").value;
     const description = taskElement.querySelector(".task-description-input").value;
 
+    // Validate title
+    if (!title.trim()) {
+        alert("Task title cannot be empty!");
+        return;
+    }
+
     // Get task tagIds
     const tagElements = taskElement.querySelectorAll(".task-tag");
     const tagIds = Array.from(tagElements).map(tagElement => {
@@ -299,7 +332,8 @@ async function saveNewTask(taskElement) {
     };
 
     try {
-        const savedTask = await addTaskApi(newTask);
+        const savedTask = await addTaskApi(newTask);  
+        switchToViewMode(taskElement);
         // Set taskElement id
         taskElement.setAttribute("task-id", savedTask.id);
     } catch (error) {
@@ -314,6 +348,12 @@ async function saveTaskChanges(taskElement) {
     // Take values
     const title = taskElement.querySelector(".task-title-input").value;
     const description = taskElement.querySelector(".task-description-input").value;
+
+    // Validate title
+    if (!title.trim()) {
+        alert("Task title cannot be empty!");
+        return;
+    }
 
     // Update edit time
     const lastUpdateTime = new Date().toISOString();
@@ -336,6 +376,7 @@ async function saveTaskChanges(taskElement) {
     try {
         const response = await updateTaskApi(taskId, updatedTask);
         console.log("Task updated successfully:", response); 
+        switchToViewMode(taskElement);
     } catch (error) {
         console.error("Error updating task:", error);
     }
@@ -425,7 +466,6 @@ function displayTask(task) {
     saveButton.style.display = "none";
     saveButton.onclick = function () {
         saveTaskChanges(taskElement, task);
-        switchToViewMode(taskElement);
     };
     taskButtons.appendChild(saveButton);
 
@@ -529,7 +569,6 @@ function createTask() {
     saveButton.textContent = "Save";
     saveButton.onclick = function () {
         saveNewTask(taskElement);
-        switchToViewMode(taskElement);
     };
     taskButtons.appendChild(saveButton);
 
