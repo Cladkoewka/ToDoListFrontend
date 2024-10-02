@@ -58,10 +58,38 @@
 
     <!-- Main content -->
     <main>
-        <!-- Add new task button -->
-        <div class="button-container">
-            <button id="add-task-button">Add Task</button>
+
+        <div id="controls-container">
+            <!-- Add Task Button -->
+            <div id="add-task-button-container">
+                <button id="add-task-button" >Add New Task</button>
+            </div> 
+            
+        
+            <!-- Filter -->
+            <div id="filter-container">
+                <div id = tag-filter-container>
+                    <input type="text" id="tag-filter-input" placeholder="Type to filter tags">
+                    <div id="tag-suggestions" class="suggestions-list">
+                        <!-- Dynamically load tag suggestions here -->
+                    </div>
+                </div>
+        
+                <!-- Show Completed Tasks Checkbox -->
+                <label for="isCompleted-filter">
+                    <input type="checkbox" id="isCompleted-filter"> Show Completed Tasks
+                </label>
+        
+                <!-- Pagination Controls -->
+                <div id="pagination-controls">
+                    <button id="previous-page" class="pagination-button">Previous</button>
+                    <span id="pagination-info">Page 1</span>
+                    <button id="next-page" class="pagination-button">Next</button>
+                </div>
+            </div>
         </div>
+
+
         <!-- Tasks list -->
         <section>
             <ul id="task-list">

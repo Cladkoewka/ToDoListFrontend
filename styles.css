@@ -55,6 +55,107 @@
     width: 100%;
 }
 
+/* Filtering */
+#controls-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+}
+
+#add-task-button-container, #filter-container {
+    width: 48%; /* Each container takes up approximately half of the width */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#filter-container {
+    justify-content: flex-end; /* Align to the left */
+}
+
+#tag-filter-input {
+    padding: 5px;
+    border: 1px solid #252422;
+    border-radius: 5px;
+    background-color: #fffcf2;
+    color: #252422;
+    width: 200px;
+    font-size: 14px;
+}
+
+#tag-suggestions {
+    visibility: hidden;
+    position: absolute;
+    background-color: #fffcf2;
+    border: 1px solid #ccc5b9;
+    border-radius: 5px;
+    height: 50px;
+    padding: 5px;
+    overflow-y: auto;
+    z-index: 1000;
+    width: 200px;
+}
+
+#tag-suggestions div {
+    padding: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#tag-suggestions div:hover {
+    background-color: #ccc5b9;
+}
+
+#isCompleted-filter {
+    margin-left: 10px;
+    cursor: pointer;
+    background-color: #fffcf2;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #252422;
+    color: #252422;
+}
+
+#pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination-button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    background-color: #fffcf2;
+    border-radius: 5px;
+    border: 1px solid #252422;
+    color: #252422;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.pagination-button:disabled {
+    background-color: #ccc;
+    color: #ffffff;
+    border: none;
+    cursor: not-allowed;
+}
+
+.pagination-button:hover:not(:disabled) {
+    background-color: #EB5E28;
+    color: #fffcf2;
+}
+
+#pagination-info {
+    font-size: 14px;
+    font-weight: bold;
+    color: #252422;
+}
+
+
 /* Add task button */
 #add-task-button {
     align-self: center; 
@@ -66,10 +167,8 @@
     cursor: pointer;
     border-radius: 5px;
     border: 2px solid #252422; 
-    transition: width  0.6s ease;
 }
 #add-task-button:hover {
-    width: 100%;
     color: #EB5E28;
 }
 
@@ -331,5 +430,14 @@ label {
 @media (max-width: 600px) {
     .task {
         width: 100%; 
+    }
+    #add-task-button-container, #filter-container {
+        width: 100%; /* При сжатии экрана каждый контейнер занимает 100% */
+        justify-content: center; /* Центрируем элементы на маленьком экране */
+        margin-bottom: 10px; /* Добавим отступы между блоками */
+    }
+
+    #pagination-controls {
+        justify-content: center; /* Центрируем пагинацию на маленьком экране */
     }
 }
