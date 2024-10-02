@@ -3,12 +3,15 @@ const MaxTitleLength = 25;
 const MaxDescriptionLength = 200;
 const MaxTagLength = 20;
 const CurrentUserId = 1; // maybe later will be added auth logic
+const pageSize = 6;
 
 const addTaskButton = document.getElementById("add-task-button");
 const taskList = document.getElementById("task-list");
 
-// Variable for tracking last task
+// VARIABLES
 let lastEditedTask;
+let currentPage = 1;
+let totalPages = 0;
 
 
 // EVENTS
@@ -65,6 +68,25 @@ async function fetchTasksApi() {
     if (!response.ok) throw new Error("Network response error");
     const tasksDto = await response.json();
     return tasksDto.map(task => new Task(
+        task.id,
+        task.title,
+        task.description,
+        task.createdTime,
+        task.lastUpdateTime,
+        task.isCompleted,
+        task.userId,
+        task.tags
+    ));
+}
+
+async function fetchPaginatedTasksApi(page = 1, size = 6) {
+    const response = await fetch(`${tasksApiBaseUrl}/paginated?pageNumber=${page}&pageSize=${size}`);
+    if (!response.ok) throw new Error("Network response error");
+    const data = await response.json(); 
+
+    totalPages = Math.ceil(data.totalCount / size); 
+
+    return data.tasks.map(task => new Task(
         task.id,
         task.title,
         task.description,
@@ -153,6 +175,41 @@ async function deleteTagApi(tagId) {
     if (!response.ok) throw new Error('Failed to delete tag');
 }
 
+function updatePaginationControls(totalPages) {
+    document.getElementById("next-page").disabled = currentPage >= totalPages;
+    document.getElementById("previous-page").disabled = currentPage <= 1;
+    document.getElementById("pagination-info").textContent = `Page ${currentPage} of ${totalPages}`;
+}
+
+async function loadTasks(page = 1) {
+    try {
+        const tasks = await fetchPaginatedTasksApi(page, pageSize);
+        taskList.innerHTML = ""; 
+        tasks.forEach(task => displayTask(task));
+
+        updatePaginationControls(totalPages);
+    } catch (error) {
+        console.error('Error fetching tasks:', error);
+    }
+}
+
+document.getElementById("next-page").addEventListener("click", () => {
+    if (currentPage < totalPages) {
+        currentPage++;
+        loadTasks(currentPage);
+    }
+});
+
+document.getElementById("previous-page").addEventListener("click", () => {
+    if (currentPage > 1) {
+        currentPage--;
+        loadTasks(currentPage);
+    }
+});
+
+window.onload = () => {
+    loadTasks();
+};
 
 // TASK METHODS
 
