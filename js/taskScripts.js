@@ -15,15 +15,9 @@ let totalPages = 0;
 
 
 // EVENTS
-window.onload = async () => {
-    try {
-        // display all tasks in api
-        const tasks = await fetchTasksApi();
-        tasks.forEach(task => displayTask(task));
-    } catch (error) {
-        console.error('Error fetching tasks:', error);
-    }
-}
+window.onload = () => {
+    loadTasks();
+};
 
 addTaskButton.onclick = createTask;
 
@@ -175,12 +169,14 @@ async function deleteTagApi(tagId) {
     if (!response.ok) throw new Error('Failed to delete tag');
 }
 
+// update pagination elements
 function updatePaginationControls(totalPages) {
     document.getElementById("next-page").disabled = currentPage >= totalPages;
     document.getElementById("previous-page").disabled = currentPage <= 1;
     document.getElementById("pagination-info").textContent = `Page ${currentPage} of ${totalPages}`;
 }
 
+// load Existing tasks
 async function loadTasks(page = 1) {
     try {
         const tasks = await fetchPaginatedTasksApi(page, pageSize);
@@ -193,6 +189,7 @@ async function loadTasks(page = 1) {
     }
 }
 
+// next page pagination
 document.getElementById("next-page").addEventListener("click", () => {
     if (currentPage < totalPages) {
         currentPage++;
@@ -200,6 +197,7 @@ document.getElementById("next-page").addEventListener("click", () => {
     }
 });
 
+// previous page pagination
 document.getElementById("previous-page").addEventListener("click", () => {
     if (currentPage > 1) {
         currentPage--;
@@ -207,9 +205,7 @@ document.getElementById("previous-page").addEventListener("click", () => {
     }
 });
 
-window.onload = () => {
-    loadTasks();
-};
+
 
 // TASK METHODS
 
@@ -393,6 +389,8 @@ async function saveNewTask(taskElement) {
         switchToViewMode(taskElement);
         // Set taskElement id
         taskElement.setAttribute("task-id", savedTask.id);
+        const checkbox = taskElement.querySelector(".task-checkbox");
+        checkbox.style.display = "block";
     } catch (error) {
         console.error("Error saving new task:", error);
     }
@@ -446,11 +444,29 @@ function displayTask(task) {
     taskElement.classList.add("task");
     taskElement.setAttribute("task-id", task.id);
 
+    // Task header container
+    const taskHeader = document.createElement("div");
+    taskHeader.classList.add("task-head");
+
     // Title
     const title = document.createElement("h3");
     title.classList.add("task-title");
     title.textContent = task.title;
-    taskElement.appendChild(title);
+    taskHeader.appendChild(title);
+
+    // IsComplete checkbox
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = task.isCompleted;
+    checkbox.classList.add("task-checkbox");
+
+    // Add event listener to checkbox
+    checkbox.addEventListener('change', () => {
+        task.isCompleted = checkbox.checked;
+    });
+    taskHeader.appendChild(checkbox);
+
+    taskElement.appendChild(taskHeader);
 
     // Dates
     const datesDiv = document.createElement("div");
@@ -553,14 +569,27 @@ function createTask() {
     const taskElement = document.createElement("li");
     taskElement.classList.add("task");
 
-    // Title input
+    // Task header container
+    const taskHeader = document.createElement("div");
+    taskHeader.classList.add("task-head");
+
+    // Title
     const titleInput = document.createElement("input");
     titleInput.classList.add("task-title-input");
     titleInput.type = "text";
     titleInput.value = "Task title"; 
     titleInput.maxLength = MaxTitleLength;
     titleInput.required = true;
-    taskElement.appendChild(titleInput);
+    taskHeader.appendChild(titleInput);
+
+    // IsComplete checkbox
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.classList.add("task-checkbox");
+    checkbox.style.display = "none";
+    taskHeader.appendChild(checkbox);
+
+    taskElement.appendChild(taskHeader);
 
     // Set Dates
     const datesDiv = document.createElement("div");
@@ -650,14 +679,18 @@ function createTask() {
 // Change view to Edit mode, replace fields to inputs
 function switchToEditMode(taskElement) {
     // Find and replace title to title input
-    const title = taskElement.querySelector(".task-title");
+    const taskHead = taskElement.querySelector(".task-head");
+    const title = taskHead.querySelector(".task-title");
+
     const titleInput = document.createElement("input");
     titleInput.classList.add("task-title-input");
     titleInput.type = "text";
+
+    titleInput.value = title.textContent;
     titleInput.maxLength = MaxTitleLength;
     titleInput.required = true;
-    titleInput.value = title.textContent; 
-    taskElement.replaceChild(titleInput, title);
+    
+    taskHead.replaceChild(titleInput, title);
     
     // Find and replace description to description input
     const description = taskElement.querySelector(".task-description");
@@ -690,11 +723,12 @@ function switchToEditMode(taskElement) {
 // Change view to View mode, replace inputs to fields
 function switchToViewMode(taskElement) {
     // Find and replace title input to title
-    const titleInput = taskElement.querySelector(".task-title-input");
+    const taskHead = taskElement.querySelector(".task-head");
+    const titleInput = taskHead.querySelector(".task-title-input");
     const title = document.createElement("h3");
     title.classList.add("task-title");
     title.textContent = titleInput.value;
-    taskElement.replaceChild(title, titleInput);
+    taskHead.replaceChild(title, titleInput);   
 
     // Find and replace description input to description field
     const descriptionInput = taskElement.querySelector(".task-description-input");

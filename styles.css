@@ -225,6 +225,18 @@
     padding: 0;
     overflow: hidden;
 }
+.task-head {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between;
+    gap: 10px; 
+}
+.task-checkbox {
+    margin-right: 10px; 
+    width: 20px; 
+    height: 20px;
+    cursor: pointer;
+}
 .task-title {
     text-align: center;
     color:#252422;
@@ -233,6 +245,7 @@
     font-weight:bolder;
     margin: 10px;
     height: 40px;
+    flex-grow: 1;
 }
 .task-dates {
     display: flex;
@@ -298,6 +311,7 @@
     align-self: center;
     font-size: larger;
     font-weight: bolder;
+    flex-grow: 1;
 }
 .task-description-input
 {
