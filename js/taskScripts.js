@@ -7,6 +7,7 @@ const pageSize = 6;
 
 const addTaskButton = document.getElementById("add-task-button");
 const taskList = document.getElementById("task-list");
+const showCompletedFilter = document.getElementById("isCompleted-filter");
 
 // VARIABLES
 let lastEditedTask;
@@ -16,10 +17,22 @@ let totalPages = 0;
 
 // EVENTS
 window.onload = () => {
-    loadTasks();
+    loadTasks(1, showCompletedFilter.checked);
 };
 
+window.addEventListener('DOMContentLoaded', () => {
+    const savedFilterState = localStorage.getItem('isCompletedFilter');
+
+    if (savedFilterState !== null) {
+        showCompletedFilter.checked = savedFilterState === 'true';
+    }
+});
+
 addTaskButton.onclick = createTask;
+
+showCompletedFilter.addEventListener('change', () => {
+    localStorage.setItem('isCompletedFilter', showCompletedFilter.checked);
+});
 
 
 // CLASSES
@@ -75,6 +88,25 @@ async function fetchTasksApi() {
 
 async function fetchPaginatedTasksApi(page = 1, size = 6) {
     const response = await fetch(`${tasksApiBaseUrl}/paginated?pageNumber=${page}&pageSize=${size}`);
+    if (!response.ok) throw new Error("Network response error");
+    const data = await response.json(); 
+
+    totalPages = Math.ceil(data.totalCount / size); 
+
+    return data.tasks.map(task => new Task(
+        task.id,
+        task.title,
+        task.description,
+        task.createdTime,
+        task.lastUpdateTime,
+        task.isCompleted,
+        task.userId,
+        task.tags
+    ));
+}
+
+async function fetchFilteredTasksApi(page = 1, size = 6, showCompleted = true) {
+    const response = await fetch(`${tasksApiBaseUrl}/filtered?pageNumber=${page}&pageSize=${size}&showCompleted=${showCompleted}`);
     if (!response.ok) throw new Error("Network response error");
     const data = await response.json(); 
 
@@ -189,11 +221,30 @@ async function loadTasks(page = 1) {
     }
 }
 
+async function loadTasks(page = 1, showCompleted = true) {
+    try {
+        const tasks = await fetchFilteredTasksApi(page, pageSize, showCompleted);
+        taskList.innerHTML = ""; 
+        tasks.forEach(task => displayTask(task));
+
+        updatePaginationControls(totalPages);
+    } catch (error) {
+        console.error('Error fetching tasks:', error);
+    }
+}
+
+// isCompleted filtering
+showCompletedFilter.addEventListener("change", function() {
+    const isChecked = this.checked;
+    currentPage = 1;
+    loadTasks(currentPage, isChecked); // передаем текущее значение чекбокса
+});
+
 // next page pagination
 document.getElementById("next-page").addEventListener("click", () => {
     if (currentPage < totalPages) {
         currentPage++;
-        loadTasks(currentPage);
+        loadTasks(currentPage, showCompletedFilter.checked);
     }
 });
 
@@ -201,7 +252,7 @@ document.getElementById("next-page").addEventListener("click", () => {
 document.getElementById("previous-page").addEventListener("click", () => {
     if (currentPage > 1) {
         currentPage--;
-        loadTasks(currentPage);
+        loadTasks(currentPage, showCompletedFilter.checked);
     }
 });
 
@@ -219,6 +270,7 @@ async function deleteTask(taskElement, taskId) {
         setTimeout(() => {
             taskList.removeChild(taskElement);
         }, 500);
+        loadTasks(currentPage, showCompletedFilter.checked);
     } catch (error) {
         console.error("Failed to delete task:", error);
     }
@@ -419,12 +471,15 @@ async function saveTaskChanges(taskElement) {
         return tagElement.getAttribute("tag-id");
     }).filter(id => id !== null); 
 
+    // Get isCompleted
+    const isCompleted = taskElement.querySelector(".task-checkbox").checked;
+
     // Dto updateTask
     const updatedTask = {
         title: title,
         description: description,
         lastUpdateTime: lastUpdateTime,
-        isCompleted: false, // Need to add logic maybe later
+        isCompleted: isCompleted,
         tagIds: tagIds 
     };
 
@@ -432,6 +487,46 @@ async function saveTaskChanges(taskElement) {
         const response = await updateTaskApi(taskId, updatedTask);
         console.log("Task updated successfully:", response); 
         switchToViewMode(taskElement);
+    } catch (error) {
+        console.error("Error updating task:", error);
+    }
+}
+
+async function saveTaskCompleted(taskElement) {
+    const taskId = taskElement.getAttribute("task-id");
+
+    // Take values
+    const title = taskElement.querySelector(".task-title").textContent;
+    const description = taskElement.querySelector(".task-description").textContent;
+
+    // Update edit time
+    const lastUpdateTime = new Date().toISOString();
+
+    // Get task tagIds
+    const tagElements = taskElement.querySelectorAll(".task-tag");
+    const tagIds = Array.from(tagElements).map(tagElement => {
+        return tagElement.getAttribute("tag-id");
+    }).filter(id => id !== null); 
+
+    // Get isCompleted
+    const isCompleted = taskElement.querySelector(".task-checkbox").checked;
+
+    // Dto updateTask
+    const updatedTask = {
+        title: title,
+        description: description,
+        lastUpdateTime: lastUpdateTime,
+        isCompleted: isCompleted,
+        tagIds: tagIds 
+    };
+
+    try {
+        const response = await updateTaskApi(taskId, updatedTask);
+        console.log("Task updated successfully:", response); 
+        if (showCompletedFilter.checked === false)
+        {
+            loadTasks(currentPage, showCompletedFilter.checked);
+        }
     } catch (error) {
         console.error("Error updating task:", error);
     }
@@ -463,6 +558,7 @@ function displayTask(task) {
     // Add event listener to checkbox
     checkbox.addEventListener('change', () => {
         task.isCompleted = checkbox.checked;
+        saveTaskCompleted(taskElement);
     });
     taskHeader.appendChild(checkbox);
 
@@ -538,7 +634,7 @@ function displayTask(task) {
     saveButton.textContent = "Save";
     saveButton.style.display = "none";
     saveButton.onclick = function () {
-        saveTaskChanges(taskElement, task);
+        saveTaskChanges(taskElement);
     };
     taskButtons.appendChild(saveButton);
 
@@ -587,6 +683,10 @@ function createTask() {
     checkbox.type = "checkbox";
     checkbox.classList.add("task-checkbox");
     checkbox.style.display = "none";
+    checkbox.addEventListener('change', () => {
+        task.isCompleted = checkbox.checked;
+        saveTaskCompleted(taskElement);
+    });
     taskHeader.appendChild(checkbox);
 
     taskElement.appendChild(taskHeader);
@@ -681,16 +781,17 @@ function switchToEditMode(taskElement) {
     // Find and replace title to title input
     const taskHead = taskElement.querySelector(".task-head");
     const title = taskHead.querySelector(".task-title");
-
     const titleInput = document.createElement("input");
     titleInput.classList.add("task-title-input");
     titleInput.type = "text";
-
     titleInput.value = title.textContent;
     titleInput.maxLength = MaxTitleLength;
     titleInput.required = true;
-    
     taskHead.replaceChild(titleInput, title);
+
+    // Complete checkbox
+    const taskCheckbox = taskElement.querySelector(".task-checkbox");
+    taskCheckbox.style.display = "none";
     
     // Find and replace description to description input
     const description = taskElement.querySelector(".task-description");
@@ -729,6 +830,10 @@ function switchToViewMode(taskElement) {
     title.classList.add("task-title");
     title.textContent = titleInput.value;
     taskHead.replaceChild(title, titleInput);   
+
+    // Complete checkbox
+    const taskCheckbox = taskElement.querySelector(".task-checkbox");
+    taskCheckbox.style.display = "inline";
 
     // Find and replace description input to description field
     const descriptionInput = taskElement.querySelector(".task-description-input");
