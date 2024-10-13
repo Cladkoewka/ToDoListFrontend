@@ -160,7 +160,6 @@ async function addTaskApi(task) {
             "Content-Type": "application/json",
             "Token": `${localStorage.getItem('authToken')}`
         },
-        credentials: 'include',
         body: JSON.stringify({
             title: task.title,
             description: task.description,
@@ -181,7 +180,6 @@ async function updateTaskApi(taskId, updatedTask) {
             'Content-Type': 'application/json',
             "Token": `${localStorage.getItem('authToken')}`
         },
-        credentials: 'include',
         body: JSON.stringify({
             title: updatedTask.title,
             description: updatedTask.description,
@@ -210,8 +208,7 @@ async function deleteTaskApi(taskId) {
         method: 'DELETE',
         headers: {
             "Token": `${localStorage.getItem('authToken')}`
-        },
-        credentials: 'include'
+        }
     });
     if (!response.ok) throw new Error('Failed to delete task');
 }
