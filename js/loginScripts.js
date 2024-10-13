@@ -1,4 +1,4 @@
-const authApiBaseUrl = "https://todoapi-0rqb.onrender.com/api/auth";
+const authApiBaseUrl = "https://todolist-1-9o39.onrender.com/api/auth";
 const loginButton = document.getElementById("login-button");
 
 //modals
