@@ -82,8 +82,8 @@ class Task {
 
 
 // API METHODS
-const tasksApiBaseUrl = "http://localhost:8080/api/tasks";
-const tagsApiBaseUrl = "http://localhost:8080/api/tags";
+const tasksApiBaseUrl = "https://todoapi-0rqb.onrender.com/api/tasks";
+const tagsApiBaseUrl = "https://todoapi-0rqb.onrender.com/api/tags";
 
 // Get all tasks
 async function fetchTasksApi() {
