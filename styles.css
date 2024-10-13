@@ -14,7 +14,7 @@
 }
 
 /* Modals */
-#login-modal, #register-modal {
+#login-modal, #register-modal, #profile-modal {
     visibility: hidden;
     position: fixed;
     top: 50%;
@@ -40,17 +40,18 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 900;
 }
-#login-modal-buttons, #register-modal-buttons {
+#login-modal-buttons, #register-modal-buttons, #profile-modal-buttons {
     display: flex;
     justify-content: space-between;
 }
 #login-modal-login-button, #register-modal-register-button,
-#close-login-modal-button, #register-modal-close-button
+#close-login-modal-button, #register-modal-close-button,
+#profile-logout-button, profile-close-modal-button
 {
     width: 49%;
     text-align: center;
 }
-#login-email, #login-password, #register-email,
+#login-email, #login-password, #register-email, #register-username,
 #register-password, #register-confirm-password {
     width: 100%;
 }
@@ -349,7 +350,7 @@
 }
 
 /* Input */
-#register-email, #register-password,
+#register-email, #register-password, #register-username,
 #register-confirm-password, #login-email, #login-password {
     background-color: white;
     width: 100%;

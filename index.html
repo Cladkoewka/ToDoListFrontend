@@ -35,10 +35,22 @@
         </form>
     </div>
 
+    <!-- Profile modal -->
+    <div id="profile-modal" style="visibility: hidden;">
+        <h2>Profile</h2>
+        <p id="profile-username"></p>
+        <div id="profile-modal-buttons">
+            <button id="profile-logout-button">Logout</button>
+            <button id="profile-close-modal-button">Close</button>
+        </div>  
+    </div>
+
     <!-- Register modal -->
     <div id="register-modal">
         <h2>Register</h2>
         <form id="register-form">
+            <label for="register-username">Username:</label><br>
+            <input type="text" id="register-username" name="register-username" minlength="2" maxlength="20" required><br><br>
             <label for="register-email">Email:</label><br>
             <input type="email" id="register-email" name="register-email" required><br><br>
             <label for="register-password">Password:</label><br>

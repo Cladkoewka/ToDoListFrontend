@@ -2,7 +2,6 @@
 const MaxTitleLength = 25;
 const MaxDescriptionLength = 200;
 const MaxTagLength = 20;
-const CurrentUserId = 1; // maybe later will be added auth logic
 const pageSize = 6;
 
 const addTaskButton = document.getElementById("add-task-button");
@@ -16,9 +15,26 @@ let totalPages = 0;
 
 
 // EVENTS
-window.onload = () => {
-    loadTasks(1, showCompletedFilter.checked);
-};
+window.addEventListener('loadPage', (event) => {
+    let token = localStorage.getItem('authToken');
+    if (token !== null)
+    {
+        loadTasks(1, showCompletedFilter.checked);
+    }
+});
+
+window.addEventListener('login', (event) => {
+    let token = localStorage.getItem('authToken');
+    if (token !== null)
+    {
+        loadTasks(currentPage, showCompletedFilter.checked);
+    }
+    else
+    {
+        taskList.innerHTML = '';
+    }
+});
+
 
 window.addEventListener('DOMContentLoaded', () => {
     const savedFilterState = localStorage.getItem('isCompletedFilter');
@@ -71,7 +87,11 @@ const tagsApiBaseUrl = "http://localhost:8080/api/tags";
 
 // Get all tasks
 async function fetchTasksApi() {
-    const response = await fetch(tasksApiBaseUrl);
+    const response = await fetch(tasksApiBaseUrl, {
+        headers: {
+            "Token": `${localStorage.getItem('authToken')}`
+        }
+    });
     if (!response.ok) throw new Error("Network response error");
     const tasksDto = await response.json();
     return tasksDto.map(task => new Task(
@@ -87,7 +107,11 @@ async function fetchTasksApi() {
 }
 
 async function fetchPaginatedTasksApi(page = 1, size = 6) {
-    const response = await fetch(`${tasksApiBaseUrl}/paginated?pageNumber=${page}&pageSize=${size}`);
+    const response = await fetch(`${tasksApiBaseUrl}/paginated?pageNumber=${page}&pageSize=${size}`, {
+        headers: {
+            "Token": `${localStorage.getItem('authToken')}`
+        }
+    });
     if (!response.ok) throw new Error("Network response error");
     const data = await response.json(); 
 
@@ -106,7 +130,11 @@ async function fetchPaginatedTasksApi(page = 1, size = 6) {
 }
 
 async function fetchFilteredTasksApi(page = 1, size = 6, showCompleted = true) {
-    const response = await fetch(`${tasksApiBaseUrl}/filtered?pageNumber=${page}&pageSize=${size}&showCompleted=${showCompleted}`);
+    const response = await fetch(`${tasksApiBaseUrl}/filtered?pageNumber=${page}&pageSize=${size}&showCompleted=${showCompleted}`, {
+        headers: {
+            "Token": `${localStorage.getItem('authToken')}`
+        }
+    });
     if (!response.ok) throw new Error("Network response error");
     const data = await response.json(); 
 
@@ -129,8 +157,10 @@ async function addTaskApi(task) {
     const response = await fetch(tasksApiBaseUrl, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Token": `${localStorage.getItem('authToken')}`
         },
+        credentials: 'include',
         body: JSON.stringify({
             title: task.title,
             description: task.description,
@@ -139,7 +169,7 @@ async function addTaskApi(task) {
             tagIds: task.tagIds
         })
     });
-    if (!response.ok) throw new Error('Failed to add task');
+    if (!response.ok) throw new Error(`Failed to add task: ${error.message || 'Unknown error'}`);
     return await response.json();     
 }
 
@@ -149,7 +179,9 @@ async function updateTaskApi(taskId, updatedTask) {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
+            "Token": `${localStorage.getItem('authToken')}`
         },
+        credentials: 'include',
         body: JSON.stringify({
             title: updatedTask.title,
             description: updatedTask.description,
@@ -176,6 +208,10 @@ async function updateTaskApi(taskId, updatedTask) {
 async function deleteTaskApi(taskId) {
     const response = await fetch(`${tasksApiBaseUrl}/${taskId}`, {
         method: 'DELETE',
+        headers: {
+            "Token": `${localStorage.getItem('authToken')}`
+        },
+        credentials: 'include'
     });
     if (!response.ok) throw new Error('Failed to delete task');
 }
@@ -432,7 +468,7 @@ async function saveNewTask(taskElement) {
         title: title,
         description: description,
         createdTime: new Date().toISOString(),
-        userId: CurrentUserId, 
+        userId: 1, // it replaces at backend
         tagIds: tagIds
     };
 
