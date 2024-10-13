@@ -27,10 +27,10 @@ This project is a To-Do List application built with a focus on user-friendly fun
 ## Deployment
 
 The project is hosted on GitHub Pages and can be accessed at:
-[https://cladkoewka.github.io/ToDoListFrontend/](https://cladkoewka.github.io/ToDoListFrontend/)
+[To-Do List GitHub Pages](https://cladkoewka.github.io/ToDoListFrontend/)
 
 The backend for this application is developed by myself and can be found at:
-[https://github.com/Cladkoewka/ToDoListAPI](https://github.com/Cladkoewka/ToDoListAPI)
+[To-Do List API](https://github.com/Cladkoewka/ToDoListAPI)
 
 ## View 
 
